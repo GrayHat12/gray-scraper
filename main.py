@@ -43,7 +43,7 @@ def analyze(content,comments):
     return comments
 
 def analyze2(content,comments):
-    print(content)
+    #print(content)
     author=None
     comment = ''
     end = False
@@ -87,16 +87,19 @@ try:
         elem1 = driver.find_element_by_class_name('Igw0E.IwRSH.YBx95._4EzTm.MGdpg.NUiEW')
         elem2 = driver.find_element_by_class_name('eo2As')
         try :
-            elem3=driver.find_element_by_id('EizgU')
+            elem3=driver.find_element_by_class_name('Igw0E.IwRSH.eGOV_.ybXk5._4EzTm')
+            elem3.click()
+            elem3=driver.find_element_by_class_name('TCSYW')
             f0=open('test.txt','w',encoding='utf-8')
             f0.write(str(elem3.text))
             f0.close
             fo=open('test.txt','r',encoding='utf-8')
             st=fo.read()
             fo.close()
-            replies=analyze2(st,replies)
+            replies=analyze(st,replies)
+            print('Analyzed Replies')
         except Exception as err:
-            print('Checked Replies')
+            print('No Replies')
         f0=open('test.txt','w',encoding='utf-8')
         f0.write(str(elem2.text))
         f0.close
