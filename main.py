@@ -104,13 +104,13 @@ try:
         st=fo.read()
         fo.close()
         comments=analyze(st,comments)
-        print('click ',i,' Analyzed')
+        print('click ',i,' Analyzed ',len(comments),' Comments in total recieved')
         elem1.click()
         #src.append(driver.page_source)
 except Exception as err:
     print(err)
 finally :
     comments.update({"replies":replies})
-    with open('data.json', 'w') as fp:
+    with open('data.json', 'w',encoding='utf-8') as fp:
         json.dump(comments, fp)
     print('Got ',len(comments),' comments and ',len(replies),' Replies')
