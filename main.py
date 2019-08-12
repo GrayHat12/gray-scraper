@@ -97,9 +97,9 @@ try:
             st=fo.read()
             fo.close()
             replies=analyze(st,replies)
-            print('Analyzed Replies',end='\r')
+            print('Analyzed Replies')
         except Exception as err:
-            print('No Replies',end='\r')
+            print('No Replies')
         f0=open('test.txt','w',encoding='utf-8')
         f0.write(str(elem2.text))
         f0.close
@@ -107,7 +107,7 @@ try:
         st=fo.read()
         fo.close()
         comments=analyze(st,comments)
-        print('click ',i,' Analyzed ',len(comments),' Comments in total recieved',end='\r')
+        print('click ',i,' Analyzed ',len(comments),' Comments in total recieved')
         elem1.click()
         #src.append(driver.page_source)
 except Exception as err:
