@@ -48,7 +48,7 @@ def getChild(pid):
 def main(ccid):
     cid_list=[]
     adict=dict()
-    while ccid<=50000001:
+    while ccid<=50000000:
         print(ccid)
         bdict=dict()
         ncid=getChild(ccid)
@@ -78,7 +78,8 @@ def main(ccid):
                 finally :
                     adict.update({ccid : bdict})
         with open(str(ccid)+'.json','w',encoding='utf-8') as f:
-            json.dump(bdict,f)
+            #json.dump(bdict,f)
+            f.write(json.dumps(bdict,ensure_ascii=False))
             print('Written ',str(ccid)+'.json')
         ccid+=1
         cid_list=[]
