@@ -48,8 +48,16 @@ def analyze(content,comments):
                 continue
     return comments
 
+def analyze2(content,comments):
+    user=None
+    userStatus=None
+    author=None
+    likes = None
+    comment = ''
+    end = False
+
 driver = webdriver.Chrome(executable_path=r"C:\Users\Rahul\PaidProjects\PythonInstagram\gray-scraper\chromedriver.exe")
-driver.get('https://www.instagram.com/p/B1BVgO8i05Y/')
+driver.get('https://www.instagram.com/p/B0OsWFXlPqq/')
 i=0
 comments = dict()
 replies=dict()

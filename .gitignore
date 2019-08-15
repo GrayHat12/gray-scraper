@@ -1,3 +1,13 @@
 
 count.py
 /.vs
+*.json
+koreanScraper/cat1.txt
+koreanScraper/debug.log
+test.txt
+test.txt
+debug.log
+data.json
+*.json
+*.log
+*.txt
