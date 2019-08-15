@@ -16,7 +16,7 @@ headers={
 data = {
     'cid' : None,
     'timeUnit' : 'date',
-    'startDate' : '2019-07-14',
+    'startDate' : '2018-01-01',
     'endDate' : '2019-08-14',
     'age' : '',
     'gender' : '',
@@ -37,46 +37,58 @@ def getChild(pid):
     #print(r.text)
     tdata=json.loads(r.text)
     data=tdata["childList"]
-    cids=[]
+    cids=[tdata["name"]]
     for dat in data:
-        cids.append(dat["cid"])
-    if len(cids)==0:
-        return None
+        cids.append([dat["cid"],dat["name"]])
+    if len(cids)==1:
+        return [None,cids[0]]
     else:
         return cids
 
 def main(ccid):
     cid_list=[]
     adict=dict()
-    while ccid<=50000000:
+    while ccid<=50000010:
         print(ccid)
         bdict=dict()
         ncid=getChild(ccid)
         print()
-        if ncid!=None:
+        if ncid[0]!=None:
             cdict=dict()
+            name=ncid[0]
+            bdict.update({"name" : name})
             for n_ncid in ncid:
+                if n_ncid==name:
+                    continue
                 try:
-                    nncid=getChild(n_ncid)
-                    if nncid!=None:
+                    nncid=getChild(n_ncid[0])
+                    #print(nncid)
+                    if nncid[0]!=None:
+                        name=nncid[0]
                         #cid_list.extend(nncid)
                         ddict=dict()
+                        ddict.update({"name" : name})
                         for cid in nncid:
+                            if cid==name:
+                                continue
                             data2=data
                             data2.update({'gender' : 'm'})
-                            mdata=getCid(cid,data2)
+                            mdata=getCid(cid[0],data2)
                             print(cid,' got male')
                             data3=data
                             data3.update({'gender' : 'f'})
-                            fdata=getCid(cid,data3)
+                            fdata=getCid(cid[0],data3)
                             print(cid,' got female')
-                            ddict.update({cid : {'male' : mdata, 'female' : fdata}})
-                            cdict.update({n_ncid:ddict})
+                            ddict.update({cid[0] : {'name':cid[1],'male' : mdata, 'female' : fdata}})
+                            cdict.update({n_ncid[0]:ddict})
                             bdict.update(cdict)
                 except Exception as err:
                     print(err)
                 finally :
                     adict.update({ccid : bdict})
+        else :
+            name=ncid[1]
+            bdict.update({"name" : name})
         with open(str(ccid)+'.json','w',encoding='utf-8') as f:
             #json.dump(bdict,f)
             f.write(json.dumps(bdict,ensure_ascii=False))
