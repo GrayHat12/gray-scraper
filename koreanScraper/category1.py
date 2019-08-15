@@ -78,10 +78,9 @@ def main(ccid):
                 finally :
                     adict.update({ccid : bdict})
         with open(str(ccid)+'.json','w',encoding='utf-8') as f:
-            json.dump(adict,f)
+            json.dump(bdict,f)
             print('Written ',str(ccid)+'.json')
         ccid+=1
         cid_list=[]
 
 main(ccid)
-#getChild(ccid)
