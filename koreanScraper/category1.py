@@ -116,6 +116,12 @@ def getChild(pid):
         return [None,cids[0]]
     else:
         return cids
+    
+def emptyChild(lst):
+    if lst[0]==None:
+        return True
+    else:
+        return False
 
 def main(ccid,date):
     cid_list=[]
@@ -123,51 +129,80 @@ def main(ccid,date):
     while ccid<=50000010:
         print(ccid)
         bdict=dict()
-        ncid=getChild(ccid)
-        print()
-        if ncid[0]!=None:
-            cdict=dict()
-            name=ncid[0]
+        try :
+            lst=getChild(ccid)
+            name=lst[0]
             bdict.update({"name" : name})
-            for n_ncid in ncid:
-                if n_ncid==name:
-                    continue
-                try:
-                    nncid=getChild(n_ncid[0])
-                    #print(nncid)
-                    if nncid[0]!=None:
-                        name=nncid[0]
-                        #cid_list.extend(nncid)
-                        ddict=dict()
-                        ddict.update({"name" : name})
-                        for cid in nncid:
-                            if cid==name:
+            if emptyChild(lst)==False:
+                for ls in lst:
+                    if ls==name:
+                        continue
+                    lst0=getChild(ls[0])
+                    cdict=dict()
+                    cdict.update({"name" : ls[1]})
+                    if emptyChild(lst0)==False:
+                        for ls0 in lst0:
+                            if ls0==ls[1]:
                                 continue
-                            data2=data
-                            data2.update({'gender' : 'm'})
-                            mdata=getCid(cid[0],data2,date)
-                            print(cid,' got male')
-                            data3=data
-                            data3.update({'gender' : 'f'})
-                            fdata=getCid(cid[0],data3,date)
-                            print(cid,' got female')
-                            ddict.update({cid[0] : {'name':cid[1],'male' : mdata, 'female' : fdata}})
-                            cdict.update({n_ncid[0]:ddict})
-                            bdict.update(cdict)
-                except Exception as err:
-                    print(err)
-                finally :
-                    adict.update({ccid : bdict})
-        else :
-            name=ncid[1]
-            bdict.update({"name" : name})
-        filename = date+'_'+str(ccid)+'.json'
-        with open(filename,'w',encoding='utf-8') as f:
-            #json.dump(bdict,f)
-            f.write(json.dumps(bdict,ensure_ascii=False))
-            print('Written ',str(ccid)+'.json')
+                            lst1=getChild(ls0[0])
+                            ddict=dict()
+                            ddict.update({"name" : ls0[1]})
+                            if emptyChild(lst1)==False:
+                                for ls1 in lst1:
+                                    if ls1==ls0[1]:
+                                        continue
+                                    data2=data
+                                    data2.update({'gender' : 'm'})
+                                    mdata=getCid(ls1[0],data2,date)
+                                    print(ls1,' got male')
+                                    data3=data
+                                    data3.update({'gender' : 'f'})
+                                    fdata=getCid(ls1[0],data3,date)
+                                    print(ls1,' got female')
+                                    ddict.update({ls1[0]:{"name":ls1[1],"male" : mdata,"female" : fdata}})
+                            else:
+                                data2=data
+                                data2.update({'gender' : 'm'})
+                                mdata=getCid(ls0[0],data2,date)
+                                print(ls0,' got male')
+                                data3=data
+                                data3.update({'gender' : 'f'})
+                                fdata=getCid(ls0[0],data3,date)
+                                print(ls0,' got female')
+                                ddict.update({"male" : mdata,"female" : fdata})
+                            cdict.update({ls0[0] : ddict})
+                    else:
+                        data2=data
+                        data2.update({'gender' : 'm'})
+                        mdata=getCid(ls[0],data2,date)
+                        print(ls,' got male')
+                        data3=data
+                        data3.update({'gender' : 'f'})
+                        fdata=getCid(ls[0],data3,date)
+                        print(ls,' got female')
+                        cdict.update({"male" : mdata,"female" : fdata})
+                    bdict.update({ls[0]:cdict})
+            else:
+                data2=data
+                data2.update({'gender' : 'm'})
+                mdata=getCid(ccid,data2,date)
+                print(ccid,',',name,' got male')
+                data3=data
+                data3.update({'gender' : 'f'})
+                fdata=getCid(ccid,data3,date)
+                print(ccid,',',name,' got female')
+                bdict.update({"male" : mdata,"female" : fdata})
+            adict.update({bdict})
+        except Exception as ex:
+            print(ex)
+        finally :
+            print("finally")
+            filename = date+'_'+str(ccid)+'.json'
+            with open(filename,'w',encoding='utf-8') as f:
+                #json.dump(bdict,f)
+                f.write(json.dumps(bdict,ensure_ascii=False))
+                print('Written ',str(ccid)+'.json')
         ccid+=1
-        cid_list=[]
 
 def driver(ccid):
     while True:
