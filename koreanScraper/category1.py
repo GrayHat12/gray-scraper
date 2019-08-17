@@ -101,7 +101,6 @@ def getCid(ccid,data,date):
     #print(r.text)
     return json.loads(str(r.text))
 
-
 def getChild(pid):
     url='https://datalab.naver.com/shoppingInsight/getCategory.naver?cid='+str(pid)
     print(pid)
@@ -193,13 +192,15 @@ def main(ccid,date):
                 print(ccid,',',name,' got female')
                 bdict.update({"male" : mdata,"female" : fdata})
             adict.update({bdict})
-        except Exception as ex:
+        except Exception as ex: 
             print(ex)
-        finally :
+        finally : 
             print("finally")
-            filename = date+'_'+str(ccid)+'.json'
+            directory='./'+date+'/'
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            filename = directory+str(ccid)+'.json'
             with open(filename,'w',encoding='utf-8') as f:
-                #json.dump(bdict,f)
                 f.write(json.dumps(bdict,ensure_ascii=False))
                 print('Written ',str(ccid)+'.json')
         ccid+=1
