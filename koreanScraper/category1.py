@@ -1,4 +1,3 @@
-"""fashion clothing>>>womens>>tshirt>"""
 import requests
 import json
 import errno
@@ -87,7 +86,7 @@ data = {
     'cid' : None,
     'timeUnit' : 'date',
     'startDate' : '2018-01-01',
-    'endDate' : '2019-08-14',
+    'endDate' : '2019-08-15',
     'age' : '',
     'gender' : '',
     'device' : ''
